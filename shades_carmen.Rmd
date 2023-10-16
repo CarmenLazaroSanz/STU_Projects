@@ -1,0 +1,344 @@
+---
+title: "Inclusivity of Shades in the Make Up Industry"
+output:
+  html_document:
+    df_print: paged
+---
+
+#Installing Packages 
+```{r}
+#install.packages("tidyverse")
+#install.packages("psych")
+```
+
+#Load library
+```{r}
+library(tidyverse)
+library(psych)
+```
+
+#Read file
+```{r}
+shades <- read_csv("shades.csv")
+shades
+```
+
+#Notes 
+##Lightness indicates wether a foundation line is for lighter or darker skintones. 
+
+##High saturation means that the colors appear to be more pure. 
+
+##Brightness and value - intensity of the light or perceived luminance. 
+
+##Hue would be like the undertone. It is either more yellow and warm, more pink, more olive... 
+
+```{r}
+summary(shades)
+```
+
+#deleting the products for wich i do not have some values 
+```{r}
+shades_1 <- drop_na(shades)
+shades_1
+```
+```{r}
+summary(shades_1)
+```
+
+
+
+#Changing <chr> to factor 
+```{r}
+shades_1$brand <- factor(shades_1$brand)
+shades_1$brand_short <- factor(shades_1$brand_short)
+shades_1$product <- factor(shades_1$product)
+shades_1$product_short <- factor(shades_1$product_short)
+shades_1$hex <- factor(shades_1$hex)
+```
+
+```{r}
+head(shades_1)
+```
+
+#Creatign subsets by brand
+```{r}
+shades_addiction <- subset(shades_1, brand == "Addiction") 
+shades_addiction
+shades_bareMinerals <- subset(shades_1, brand == "bareMinerals") 
+shades_bareMinerals
+shades_bareMinerals <- subset(shades_1, brand == "bareMinerals") 
+shades_bareMinerals
+shades_Beauty_Bakerie <- subset(shades_1, brand == "Beauty Bakerie") 
+shades_Beauty_Bakerie
+shades_Bharat_Doris <- subset(shades_1, brand == "Bharat & Doris") 
+shades_Bharat_Doris
+shades_Black_Opal <- subset(shades_1, brand == "Black Opal") 
+shades_Black_Opal
+shades_Black_Up <- subset(shades_1, brand == "Black Up")
+shades_Black_Up
+shades_Bobbi_Brown <- subset(shades_1, brand == "Bobbi Brown")
+shades_Bobbi_Brown
+shades_Colorbar <- subset(shades_1, brand == "Colorbar")
+shades_Colorbar
+shades_Estée_Lauder <- subset(shades_1, brand == "Estée Lauder")
+shades_Estée_Lauder
+shades_Fenty <- subset(shades_1, brand == "Fenty")
+shades_Fenty
+shades_Hegai_and_Ester <- subset(shades_1, brand == "Hegai and Ester")
+shades_Hegai_and_Ester
+shades_House_of_Tara <- subset(shades_1, brand == "House of Tara")
+shades_House_of_Tara
+shades_Iman <- subset(shades_1, brand == "Iman")
+shades_Iman
+shades_IPSA <- subset(shades_1, brand == "IPSA")
+shades_IPSA
+shades_LOreal <- subset(shades_1, brand == "L'Oréal")
+shades_LOreal
+shades_Lancome <- subset(shades_1, brand == "Lancôme")
+shades_Lancome
+shades_Laws_of_Nature <- subset(shades_1, brand == "Laws of Nature")
+shades_Laws_of_Nature
+shades_MAC <- subset(shades_1, brand == "MAC")
+shades_MAC
+shades_Maybelline <- subset(shades_1, brand == "Maybelline")
+shades_Maybelline
+shades_Make_Up_For_Ever <- subset(shades_1, brand == "Make Up For Ever")
+shades_Make_Up_For_Ever
+shades_NARS <- subset(shades_1, brand == "NARS")
+shades_NARS
+shades_Revlon <- subset(shades_1, brand == "Revlon")
+shades_Revlon
+shades_Shu_Uemera <- subset(shades_1, brand == "Shu Uemera")
+shades_Shu_Uemera
+shades_Trim_Prissy <- subset(shades_1, brand == "Trim & Prissy")
+shades_Trim_Prissy
+shades_Shiseido <- subset(shades_1, brand == "Shiseido")
+shades_Shiseido
+```
+#For Fenty - Blacked owned
+##Pairs pannel to see any correlation. There is a very high correlation between lightness and brightness. Moreover, these same two are the ones that define the color names. There fore, if we are looking at fenty's make up, we would know that the biggest change from shade to shade comes from the brightness and the lightness. 
+```{r}
+pairs.panels(shades_Fenty)
+```
+
+#Looking at the count of how spread their lightness is on their products. 
+```{r}
+p <- ggplot(data = shades_Fenty, 
+            mapping = aes(x = L)) + 
+            geom_histogram() +
+            labs(title = "Fenty Lightness",
+                 x = "Percentage of Lightness",
+                 y = "Count")
+p
+
+#Thre is a fair spread of their lightness use in different shades. Having a slightly bigger use of lighter since there is a bigger demand for it. 
+```
+
+
+```{r}
+ggplot(data = shades_Fenty) +
+  geom_density(mapping = aes(x = L, fill = product , alpha = 01)) +
+  labs(title = "Histogram: Fenty Lightness by Product",
+       x = "Lightness",
+       y = "Count")       
+```
+
+
+
+#For Mayballine - Not Black Owned 
+```{r}
+pairs.panels(shades_Maybelline)
+```
+
+```{r}
+p <- ggplot(data = shades_Maybelline, 
+            mapping = aes(x = L)) + 
+            geom_histogram() +
+            labs(title = "Maybelline Lightness",
+                 x = "Percentage of Lightness",
+                 y = "Count")
+p
+
+#Maybelline does provide all shades of lightness, but they have a higher focus on lighter colors compared to Fenty beauty which was more even. 
+```
+
+
+```{r}
+ggplot(data = shades_Maybelline) +
+  geom_density(mapping = aes(x = L, fill = product , alpha = 01)) +
+  labs(title = "Histogram: Maybelline Lightness by Product",
+       x = "Lightness",
+       y = "Count")    
+```
+
+```{r}
+#First the two product lines are going ot be separated 
+
+fit_me <- filter(shades_Maybelline, product == "Fit Me")
+fit_me_matte <- filter(shades_Maybelline, product == "Fit Me Matte")
+
+shapiro.test(fit_me$L)
+shapiro.test(fit_me_matte$L)
+```
+
+
+#Since the p-value is greater than 0.05, then we would consider it normal.
+##For T-Test: 
+## If p-value is >= alpha(0.05) NOT significantly different 
+## If p-value is <= alpha(0.05)  significantly different 
+```{r}
+t.test(fit_me$L, fit_me_matte$L, paired = FALSE)
+#Since the p-value (3.819e-06) is smaller than 0.05. The two shades use of lightness is are significantly different. 
+```
+
+
+
+
+
+#Beauty Bakerie - Blacked owned 
+##Surprisingly out the brands selected, this one is the only one for which the hue had any relevance to the color shade. 
+```{r}
+pairs.panels(shades_Beauty_Bakerie)
+```
+
+```{r}
+p <- ggplot(data = shades_Beauty_Bakerie, 
+            mapping = aes(x = L)) + 
+            geom_histogram() +
+            labs(title = "Beauty Bakerie Lightness",
+                 x = "Percentage of Lightness",
+                 y = "Count")
+p
+```
+```{r}
+ggplot(data = shades_Beauty_Bakerie) +
+  geom_density(mapping = aes(x = L, fill = product , alpha = 01)) +
+  labs(title = "Histogram: Beauty Bakerie Lightness by Product",
+       x = "Lightness",
+       y = "Count")    
+```
+
+
+#Estee Lauder 
+```{r}
+pairs.panels(shades_Estée_Lauder)
+```
+
+```{r}
+p <- ggplot(data = shades_Estée_Lauder, 
+            mapping = aes(x = L)) + 
+            geom_histogram() +
+            labs(title = "Estee Lauder Lightness",
+                 x = "Percentage of Lightness",
+                 y = "Count")
+p
+```
+
+```{r}
+ggplot(data = shades_Estée_Lauder) +
+  geom_density(mapping = aes(x = L, fill = product , alpha = 01)) +
+  labs(title = "Histogram: Estee Lauder Lightness by Product",
+       x = "Lightness",
+       y = "Count")    
+```
+
+
+#L'Oreal
+```{r}
+pairs.panels(shades_LOreal)
+```
+
+```{r}
+p <- ggplot(data = shades_LOreal, 
+            mapping = aes(x = L)) + 
+            geom_histogram() +
+            labs(title = "L'Oreal Lightness",
+                 x = "Percentage of Lightness",
+                 y = "Count")
+p
+```
+
+
+```{r}
+ggplot(data = shades_LOreal) +
+  geom_density(mapping = aes(x = L, fill = product , alpha = 01)) +
+  labs(title = "Histogram: Fenty Lightness by Product",
+       x = "Lightness",
+       y = "Count")    
+```
+
+#Normality: Shapiro for Loreal Two products lines as of the lightness. 
+```{r}
+#Filter groups 1 and 2 
+infalliable <- filter(shades_LOreal, product == "Infalliable")
+true_match <- filter(shades_LOreal,  product == "True Match")
+
+#Test each group's extra for normality 
+shapiro.test(infalliable$L)
+shapiro.test(true_match$L)
+
+#Since the p value is smaller than 0.05 it is considered not normal 
+
+## If P-values are less than 0.05. The distribution is significantly different from a Known normal distriburion. Not a normal distribution.  
+```
+
+#Mann_Whitney-Wilcoxon Test: since the shapiro test came as Non-Normally Distributed 
+## wilcox.test(<vector1>, <vector2>, paired = TRUE/FALSE)
+
+```{r}
+#wilcox.test(infalliable$L, true_match$L, paired = FALSE)\
+##Since the result is > 0.05 then we would assume there is weaker evidance of a null hypthesis. there is not enough difference between the shades of infallible and true match. 
+```
+
+#Trime & Prissy: Black owned 
+```{r}
+pairs.panels(shades_Trim_Prissy)
+```
+
+
+```{r}
+t <- ggplot(data = shades_Trim_Prissy, 
+       mapping = aes(x = L)) +
+       geom_histogram() +
+       labs(title = "Trim & Prissy Lightness",
+                 x = "Percentage of Lightness",
+                 y = "Count")
+t
+```
+
+
+```{r}
+ggplot(data = shades_Trim_Prissy) +
+  geom_density(mapping = aes(x = L, fill = product , alpha = 01)) +
+  labs(title = "Histogram: Trim & Prissy Lightness by Product",
+       x = "Lightness",
+       y = "Count")    
+```
+
+
+
+```{r}
+flawless_finish <- filter(shades_Trim_Prissy, product == "Flawless Finish")
+hi_def <- filter(shades_Trim_Prissy, product == "Hi - Def" )
+```
+
+
+```{r}
+shapiro.test(flawless_finish$L)
+shapiro.test(hi_def$L)
+
+#Both p-values are higher than 0.05 Both distributions are not significantly different from a know normally distribution. Therefore we assume NORMALITY
+```
+
+```{r}
+t.test(flawless_finish$L, hi_def$L, paired = FALSE)
+#The p-value is again > 0.05 which means they are not significantly different. 
+```
+
+
+
+#Thank you! 
+##Carmen Lazaro 
+
+
+
